@@ -20,6 +20,8 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
 
             System.out.println("Hello world!");
+
+            System.out.println("Хрень полная!");
             return insets;
         });
     }
