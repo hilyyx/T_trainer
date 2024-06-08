@@ -22,6 +22,10 @@ public class MainActivity extends AppCompatActivity {
             System.out.println("Hello world!");
 
             System.out.println("Хрень полная!");
+
+            while(true) {
+                System.out.println(+++);
+            }
             return insets;
         });
     }
