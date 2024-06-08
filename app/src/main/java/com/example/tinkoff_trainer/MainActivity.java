@@ -23,9 +23,14 @@ public class MainActivity extends AppCompatActivity {
 
             System.out.println("Хрень полная!");
 
-            while(true) {
-                System.out.println(+++);
+            try {
+                while(true) {
+                    System.out.println("+++");
+                }
+            } catch (Exception e) {
+                System.out.println(e.getCause());
             }
+
             return insets;
         });
     }
