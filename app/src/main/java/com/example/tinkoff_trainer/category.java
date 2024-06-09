@@ -76,7 +76,7 @@ public class category extends AppCompatActivity {
             }
         });
         checkBoxContainer.addView(checkBoxAll);
-
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 40);
         for (String category : categories) {
             CheckBox checkBox = new CheckBox(new ContextThemeWrapper(this, R.style.CygreCheckBox));
             checkBox.setText(category);
@@ -85,6 +85,9 @@ public class category extends AppCompatActivity {
             checkBox.setTypeface(ResourcesCompat.getFont(this, R.font.cygre_regular));
             checkBox.setOnClickListener(onCheckBoxClickListener);
             checkBoxContainer.addView(checkBox);
+            View spacer = new View(this);
+            spacer.setLayoutParams(layoutParams);
+            checkBoxContainer.addView(spacer);
         }
     }
 
@@ -98,25 +101,30 @@ public class category extends AppCompatActivity {
     final private View.OnClickListener onCheckBoxClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            CheckBox checkBox = (CheckBox) v;
-            boolean isChecked = checkBox.isChecked();
-            setCheckBoxDrawableRight(checkBox, isChecked);
-            String category = checkBox.getText().toString();
-            if (isChecked) {
-                selectedCategories.add(category);
-            } else {
-                selectedCategories.remove(category);
-            }
-
-            boolean allChecked = true;
-            for (int i = 1; i < checkBoxContainer.getChildCount(); i++) {
-                CheckBox checkBox1 = (CheckBox) checkBoxContainer.getChildAt(i);
-                if (!checkBox1.isChecked()) {
-                    allChecked = false;
-                    break;
+            if (v instanceof CheckBox) {
+                CheckBox checkBox = (CheckBox) v;
+                boolean isChecked = checkBox.isChecked();
+                setCheckBoxDrawableRight(checkBox, isChecked);
+                String category = checkBox.getText().toString();
+                if (isChecked) {
+                    selectedCategories.add(category);
+                } else {
+                    selectedCategories.remove(category);
                 }
+
+                boolean allChecked = true;
+                for (int i = 1; i < checkBoxContainer.getChildCount(); i++) {
+                    View childView = checkBoxContainer.getChildAt(i);
+                    if (childView instanceof CheckBox) {
+                        CheckBox checkBox1 = (CheckBox) childView;
+                        if (!checkBox1.isChecked()) {
+                            allChecked = false;
+                            break;
+                        }
+                    }
+                }
+                checkBoxAll.setChecked(allChecked);
             }
-            checkBoxAll.setChecked(allChecked);
         }
     };
 }
