@@ -1,34 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp"
+
+    android:background="@color/white"
     tools:context=".category">
 
-    <TextView
-        android:id="@+id/levelTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Выберите категории"
-        android:textSize="24sp" />
+    <ImageView
+        android:id="@+id/imageView6"
+        android:layout_width="383dp"
+        android:layout_height="361dp"
+        app:layout_constraintBottom_toTopOf="@+id/submitBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView8"
+        app:srcCompat="@drawable/box_fortypes" />
 
     <LinearLayout
         android:id="@+id/checkBoxContainer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="319dp"
+        android:layout_height="317dp"
         android:orientation="vertical"
-        android:paddingTop="16dp">
+        android:paddingTop="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView6"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/imageView6" />
 
-        <!-- CheckBoxes will be dynamically added here -->
-
-    </LinearLayout>
-
-    <Button
+    <ImageButton
         android:id="@+id/submitBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Подтвердить выбор" />
-</LinearLayout>
+        android:layout_width="209dp"
+        android:layout_height="56dp"
+        android:layout_marginBottom="60dp"
+        android:background="@null"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/start_button" />
+
+    <ImageButton
+        android:id="@+id/backBtn"
+        android:layout_width="28dp"
+        android:layout_height="26dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="18dp"
+        android:background="@null"
+        android:scaleType="fitCenter"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/back" />
+
+    <ImageView
+        android:id="@+id/lvl"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/lvl1" />
+
+    <ImageView
+        android:id="@+id/imageView5"
+        android:layout_width="443dp"
+        android:layout_height="24dp"
+        android:layout_marginTop="5dp"
+        android:adjustViewBounds="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/lvl"
+        app:srcCompat="@drawable/linev2" />
+
+    <ImageView
+        android:id="@+id/imageView8"
+        android:layout_width="380dp"
+        android:layout_height="64dp"
+        android:layout_marginTop="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.483"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView5"
+        app:srcCompat="@drawable/var_type" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

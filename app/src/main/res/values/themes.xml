@@ -1,9 +1,15 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.TINKOFF_trainer" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
-    </style>
+        <!-- Customize your dark theme here. -->
+        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+        <item name="android:textColor">@android:color/black</item>
 
+        <!-- Checkbox style -->
+        <item name="android:checkboxStyle">@style/BlackCheckBox</item>
+    </style>
+    <style name="BlackCheckBox" parent="Widget.AppCompat.CompoundButton.CheckBox">
+        <item name="android:textColor">@android:color/black</item>
+    </style>
     <style name="Theme.TINKOFF_trainer" parent="Base.Theme.TINKOFF_trainer" />
 </resources>

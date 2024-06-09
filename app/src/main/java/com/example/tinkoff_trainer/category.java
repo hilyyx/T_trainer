@@ -2,12 +2,17 @@ package com.example.tinkoff_trainer;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.res.ResourcesCompat;
+
 import java.util.ArrayList;
 
 public class category extends AppCompatActivity {
@@ -22,27 +27,28 @@ public class category extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category);
 
-        TextView levelTitle = findViewById(R.id.levelTitle);
         checkBoxContainer = findViewById(R.id.checkBoxContainer);
-        Button submitBtn = findViewById(R.id.submitBtn);
+        ImageButton submitBtn = findViewById(R.id.submitBtn);
+        ImageView num_lvl = findViewById(R.id.lvl);
 
         level = getIntent().getIntExtra("level", -1);
         if (level != -1) {
             switch (level) {
                 case 1:
-                    levelTitle.setText("Уровень 1");
+                    num_lvl.setImageResource(getResources().getIdentifier("lvl1", "drawable", getPackageName()));
                     addCheckBoxes(new String[]{"Сложение", "Вычитание", "Деление", "Умножение", "Уравнение"});
                     break;
                 case 2:
-                    levelTitle.setText("Уровень 2");
-                    addCheckBoxes(new String[]{"Логарифмы", "Тригонометрия", "Статистика", "Алгебра", "Геометрия"});
+                    num_lvl.setImageResource(getResources().getIdentifier("lvl2", "drawable", getPackageName()));
+                    addCheckBoxes(new String[]{"Степенные выражения", "Квадратные уравнения", "Неравенства"});
                     break;
                 case 3:
-                    levelTitle.setText("Уровень 3");
-                    addCheckBoxes(new String[]{"Дифференциалы", "Интегралы", "Математический анализ", "Вероятность", "Комбинаторика"});
+                    num_lvl.setImageResource(getResources().getIdentifier("lvl3", "drawable", getPackageName()));
+                    addCheckBoxes(new String[]{"Тригонометрия", "Интегралы", "Логорифмические выражения"});
                     break;
             }
         }
+
 
         submitBtn.setOnClickListener(v -> {
             Intent intent = new Intent(category.this, game.class);
@@ -53,8 +59,10 @@ public class category extends AppCompatActivity {
     }
 
     private void addCheckBoxes(String[] categories) {
-        checkBoxAll = new CheckBox(this);
+        checkBoxAll = new CheckBox(new ContextThemeWrapper(this, R.style.CygreCheckBox));
         checkBoxAll.setText("Все");
+        checkBoxAll.setTextSize(32);
+        checkBoxAll.setTypeface(ResourcesCompat.getFont(this, R.font.cygre_regular));
         checkBoxAll.setOnClickListener(v -> {
             boolean isChecked = checkBoxAll.isChecked();
             for (int i = 1; i < checkBoxContainer.getChildCount(); i++) {
@@ -70,8 +78,10 @@ public class category extends AppCompatActivity {
         checkBoxContainer.addView(checkBoxAll);
 
         for (String category : categories) {
-            CheckBox checkBox = new CheckBox(this);
+            CheckBox checkBox = new CheckBox(new ContextThemeWrapper(this, R.style.CygreCheckBox));
             checkBox.setText(category);
+            checkBox.setTextSize(32);
+            checkBox.setTypeface(ResourcesCompat.getFont(this, R.font.cygre_regular));
             checkBox.setOnClickListener(onCheckBoxClickListener);
             checkBoxContainer.addView(checkBox);
         }
