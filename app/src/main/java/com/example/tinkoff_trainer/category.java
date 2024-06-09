@@ -9,7 +9,6 @@ import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.res.ResourcesCompat;
 
@@ -44,7 +43,7 @@ public class category extends AppCompatActivity {
                     break;
                 case 3:
                     num_lvl.setImageResource(getResources().getIdentifier("lvl3", "drawable", getPackageName()));
-                    addCheckBoxes(new String[]{"Тригонометрия", "Интегралы", "Логорифмические выражения"});
+                    addCheckBoxes(new String[]{"Тригонометрия", "Интегралы", "Логарифмические выражения"});
                     break;
             }
         }
@@ -61,17 +60,18 @@ public class category extends AppCompatActivity {
     private void addCheckBoxes(String[] categories) {
         checkBoxAll = new CheckBox(new ContextThemeWrapper(this, R.style.CygreCheckBox));
         checkBoxAll.setText("Все");
+        setCheckBoxDrawableRight(checkBoxAll, false); // Изначально чекбокс не выбран
         checkBoxAll.setTextSize(32);
         checkBoxAll.setTypeface(ResourcesCompat.getFont(this, R.font.cygre_regular));
         checkBoxAll.setOnClickListener(v -> {
             boolean isChecked = checkBoxAll.isChecked();
+            selectedCategories.clear(); // Очищаем список перед добавлением значений
             for (int i = 1; i < checkBoxContainer.getChildCount(); i++) {
                 CheckBox checkBox = (CheckBox) checkBoxContainer.getChildAt(i);
                 checkBox.setChecked(isChecked);
+                setCheckBoxDrawableRight(checkBox, isChecked);
                 if (isChecked) {
                     selectedCategories.add(checkBox.getText().toString());
-                } else {
-                    selectedCategories.remove(checkBox.getText().toString());
                 }
             }
         });
@@ -80,6 +80,7 @@ public class category extends AppCompatActivity {
         for (String category : categories) {
             CheckBox checkBox = new CheckBox(new ContextThemeWrapper(this, R.style.CygreCheckBox));
             checkBox.setText(category);
+            setCheckBoxDrawableRight(checkBox, false); // Изначально чекбокс не выбран
             checkBox.setTextSize(32);
             checkBox.setTypeface(ResourcesCompat.getFont(this, R.font.cygre_regular));
             checkBox.setOnClickListener(onCheckBoxClickListener);
@@ -87,12 +88,21 @@ public class category extends AppCompatActivity {
         }
     }
 
+    private void setCheckBoxDrawableRight(CheckBox checkBox, boolean isChecked) {
+        int drawableResId = isChecked ? R.drawable.check_checked : R.drawable.check_unchecked;
+        checkBox.setCompoundDrawablesWithIntrinsicBounds(null, null, getResources().getDrawable(drawableResId), null);
+        checkBox.setButtonDrawable(android.R.color.transparent);  // Устанавливаем прозрачное изображение для чекбокса
+    }
+
+
     final private View.OnClickListener onCheckBoxClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             CheckBox checkBox = (CheckBox) v;
+            boolean isChecked = checkBox.isChecked();
+            setCheckBoxDrawableRight(checkBox, isChecked);
             String category = checkBox.getText().toString();
-            if (checkBox.isChecked()) {
+            if (isChecked) {
                 selectedCategories.add(category);
             } else {
                 selectedCategories.remove(category);
