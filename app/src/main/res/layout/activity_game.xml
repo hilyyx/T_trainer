@@ -8,12 +8,11 @@
 
     <LinearLayout
         android:id="@+id/circlesLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:layout_width="52dp"
+        android:layout_height="18dp"
+        android:layout_marginBottom="16dp"
         android:gravity="center"
-        android:layout_marginBottom="16dp">
-    </LinearLayout>
+        android:orientation="horizontal"></LinearLayout>
 
     <Button
         android:id="@+id/button"

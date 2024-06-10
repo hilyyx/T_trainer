@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.ContextThemeWrapper;
 import android.view.View;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -19,7 +18,6 @@ public class category extends AppCompatActivity {
     private LinearLayout checkBoxContainer;
     final private ArrayList<String> selectedCategories = new ArrayList<>();
     private int level;
-    private CheckBox checkBoxAll;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,14 +41,13 @@ public class category extends AppCompatActivity {
                     break;
                 case 3:
                     num_lvl.setImageResource(getResources().getIdentifier("lvl3", "drawable", getPackageName()));
-                    addCheckBoxes(new String[]{"Тригонометрия", "Интегралы", "Логарифмические выражения"});
+                    addCheckBoxes(new String[]{"Тригонометрия", "Квадратные неравенства", "Логарифмические выражения"});
                     break;
             }
         }
 
-
         submitBtn.setOnClickListener(v -> {
-            Intent intent = new Intent(category.this, game.class);
+            Intent intent = new Intent(category.this, MainActivity.class);
             intent.putStringArrayListExtra("selectedCategories", selectedCategories);
             intent.putExtra("level", level);
             startActivity(intent);
@@ -58,24 +55,6 @@ public class category extends AppCompatActivity {
     }
 
     private void addCheckBoxes(String[] categories) {
-        checkBoxAll = new CheckBox(new ContextThemeWrapper(this, R.style.CygreCheckBox));
-        checkBoxAll.setText("Все");
-        setCheckBoxDrawableRight(checkBoxAll, false); // Изначально чекбокс не выбран
-        checkBoxAll.setTextSize(32);
-        checkBoxAll.setTypeface(ResourcesCompat.getFont(this, R.font.cygre_regular));
-        checkBoxAll.setOnClickListener(v -> {
-            boolean isChecked = checkBoxAll.isChecked();
-            selectedCategories.clear(); // Очищаем список перед добавлением значений
-            for (int i = 1; i < checkBoxContainer.getChildCount(); i++) {
-                CheckBox checkBox = (CheckBox) checkBoxContainer.getChildAt(i);
-                checkBox.setChecked(isChecked);
-                setCheckBoxDrawableRight(checkBox, isChecked);
-                if (isChecked) {
-                    selectedCategories.add(checkBox.getText().toString());
-                }
-            }
-        });
-        checkBoxContainer.addView(checkBoxAll);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 40);
         for (String category : categories) {
             CheckBox checkBox = new CheckBox(new ContextThemeWrapper(this, R.style.CygreCheckBox));
@@ -97,7 +76,6 @@ public class category extends AppCompatActivity {
         checkBox.setButtonDrawable(android.R.color.transparent);  // Устанавливаем прозрачное изображение для чекбокса
     }
 
-
     final private View.OnClickListener onCheckBoxClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -111,19 +89,6 @@ public class category extends AppCompatActivity {
                 } else {
                     selectedCategories.remove(category);
                 }
-
-                boolean allChecked = true;
-                for (int i = 1; i < checkBoxContainer.getChildCount(); i++) {
-                    View childView = checkBoxContainer.getChildAt(i);
-                    if (childView instanceof CheckBox) {
-                        CheckBox checkBox1 = (CheckBox) childView;
-                        if (!checkBox1.isChecked()) {
-                            allChecked = false;
-                            break;
-                        }
-                    }
-                }
-                checkBoxAll.setChecked(allChecked);
             }
         }
     };
