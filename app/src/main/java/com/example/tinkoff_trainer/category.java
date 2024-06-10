@@ -2,6 +2,7 @@ package com.example.tinkoff_trainer;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.widget.CheckBox;
@@ -26,6 +27,7 @@ public class category extends AppCompatActivity {
 
         checkBoxContainer = findViewById(R.id.checkBoxContainer);
         ImageButton submitBtn = findViewById(R.id.submitBtn);
+        ImageButton backBtn = findViewById(R.id.backBtn);
         ImageView num_lvl = findViewById(R.id.lvl);
 
         level = getIntent().getIntExtra("level", -1);
@@ -37,11 +39,11 @@ public class category extends AppCompatActivity {
                     break;
                 case 2:
                     num_lvl.setImageResource(getResources().getIdentifier("lvl2", "drawable", getPackageName()));
-                    addCheckBoxes(new String[]{"Степенные выражения", "Квадратные уравнения", "Неравенства"});
+                    addCheckBoxes(new String[]{"Арифметика", "Степенные выражения", "Квадратные уравнения", "Неравенства"});
                     break;
                 case 3:
                     num_lvl.setImageResource(getResources().getIdentifier("lvl3", "drawable", getPackageName()));
-                    addCheckBoxes(new String[]{"Тригонометрия", "Квадратные неравенства", "Логарифмические выражения"});
+                    addCheckBoxes(new String[]{"Квадратные неравенства", "Тригонометрия", "Логарифмические выражения"});
                     break;
             }
         }
@@ -52,21 +54,48 @@ public class category extends AppCompatActivity {
             intent.putExtra("level", level);
             startActivity(intent);
         });
+        backBtn.setOnClickListener(v -> {
+            Intent intent = new Intent(category.this, variable.class);
+            startActivity(intent);
+        });
     }
 
     private void addCheckBoxes(String[] categories) {
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 40);
         for (String category : categories) {
             CheckBox checkBox = new CheckBox(new ContextThemeWrapper(this, R.style.CygreCheckBox));
             checkBox.setText(category);
             setCheckBoxDrawableRight(checkBox, false); // Изначально чекбокс не выбран
-            checkBox.setTextSize(32);
+            checkBox.setTextSize(28);
             checkBox.setTypeface(ResourcesCompat.getFont(this, R.font.cygre_regular));
             checkBox.setOnClickListener(onCheckBoxClickListener);
             checkBoxContainer.addView(checkBox);
-            View spacer = new View(this);
-            spacer.setLayoutParams(layoutParams);
+
+            // Добавляем отступ перед изображением
+            View topSpacer = new View(this);
+            LinearLayout.LayoutParams topSpacerParams = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    20
+            );
+            topSpacer.setLayoutParams(topSpacerParams);
+            checkBoxContainer.addView(topSpacer);
+
+            // Добавляем изображение
+            ImageView spacer = new ImageView(this);
+            spacer.setImageResource(R.drawable.line);
+            LinearLayout.LayoutParams imageParams = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT);
+            spacer.setLayoutParams(imageParams);
             checkBoxContainer.addView(spacer);
+
+            // Добавляем отступ после изображения
+            View bottomSpacer = new View(this);
+            LinearLayout.LayoutParams bottomSpacerParams = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    20
+            );
+            bottomSpacer.setLayoutParams(bottomSpacerParams);
+            checkBoxContainer.addView(bottomSpacer);
         }
     }
 

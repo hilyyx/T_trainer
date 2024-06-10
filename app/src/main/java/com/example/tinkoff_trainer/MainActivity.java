@@ -1,22 +1,18 @@
 package com.example.tinkoff_trainer;
 
-import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.Random;
-
-
-import android.content.Context;
-import android.content.SharedPreferences;
-
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.ArrayList;
+import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
     private TextView textViewExample;
@@ -26,82 +22,134 @@ public class MainActivity extends AppCompatActivity {
     private int num1, num2, trueCount, totalQuestions, number_question, count, col_question;
     private double result;
     private int score = 0;
-    private int score_task=0;
-    int level = 3; // !!!установить уровень в зависимости от выбранного
-    int i = 0;
+    private int score_task = 0;
+    private int level;
+    private int i = 0;
 
     private ArrayList<Integer> oper_level = new ArrayList<>();
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Intent intent = getIntent();
+        ArrayList<String> selectedCategories = intent.getStringArrayListExtra("selectedCategories");
+        level = intent.getIntExtra("level", -1);
+
+        // Проверка, что список не пуст и не null
+        if (selectedCategories == null || selectedCategories.isEmpty()) {
+            Log.d("MainActivity", "selectedCategories is empty or null");
+            finish(); // Завершение активности, если список пуст
+            return;
+        }
+
+        for (String category : selectedCategories) {
+            Log.d("SelectedCategories", category);
+        }
+
         // Находим элементы интерфейса по их идентификаторам
         textViewExample = findViewById(R.id.textViewExample);
         editTextAnswer = findViewById(R.id.editTextAnswer);
         buttonCheck = findViewById(R.id.buttonCheck);
         buttonSkip = findViewById(R.id.buttonSkip);
-        //чистим список после обновления экрана
-        ArrayList<Integer> oper_level = new ArrayList<>();
-        // !!! количество вопросов
-        totalQuestions = 15;
-        //номер вопроса текущего
+
+        // Чистим список после обновления экрана
+        oper_level.clear();
+
+        // Количество вопросов
+        totalQuestions = 16;
+
+        // Номер текущего вопроса
         number_question = 0;
-        //выбранные типы примеров
-        if (level == 1){
-            //сложение if выбрана галочка сложение, то добавляем это
-            oper_level.add(1);
-            oper_level.add(2);
-            oper_level.add(3);
-            // if выбрана галочка вычитание, то добавляем это
-            oper_level.add(4);
-            oper_level.add(5);
-            oper_level.add(6);
-            // if выбрана галочка умножение, то добавляем это
-            oper_level.add(7);
-            oper_level.add(8);
-            oper_level.add(9);
-            // if выбрана галочка деление, то добавляем это
-            oper_level.add(10);
-            oper_level.add(11);
-            oper_level.add(12);
-            // if выбрана галочка уравнения, то добавляем это
-            oper_level.add(13);
-            oper_level.add(14);
-            oper_level.add(15);
-            count = (int) totalQuestions / oper_level.size();
-        } else if (level == 2){
-            // if выбрана галочка арифметические операции, то добавляем это
-            oper_level.add(6);
-            // if выбрана галочка возведение в степень, то добавляем это
-            oper_level.add(1);
-            oper_level.add(2);
-            oper_level.add(3);
-            // if выбрана галочка квадратные уравнения, то добавляем это
-            oper_level.add(4);
-            oper_level.add(5);
-            // if выбрана галочка неравенства, то добавляем это
-            oper_level.add(7);
-            oper_level.add(8);
-            oper_level.add(9);
-            count = (int) totalQuestions / oper_level.size();
+
+        // Выбранные типы примеров
+        if (level == 1) {
+            // Обработка выбранных категорий
+            for (String category : selectedCategories) {
+                switch (category) {
+                    case "Сложение":
+                        oper_level.add(1);
+                        oper_level.add(2);
+                        oper_level.add(3);
+                        break;
+                    case "Вычитание":
+                        oper_level.add(4);
+                        oper_level.add(5);
+                        oper_level.add(6);
+                        break;
+                    case "Умножение":
+                        oper_level.add(7);
+                        oper_level.add(8);
+                        oper_level.add(9);
+                        break;
+                    case "Деление":
+                        oper_level.add(10);
+                        oper_level.add(11);
+                        oper_level.add(12);
+                        break;
+                    case "Уравнение":
+                        oper_level.add(13);
+                        oper_level.add(14);
+                        oper_level.add(15);
+                        break;
+                }
+            }
+            if (!oper_level.isEmpty()) {
+                count = totalQuestions / oper_level.size();
+            } else {
+                count = totalQuestions;
+            }
+
+    } else if (level == 2){
+            for (String category : selectedCategories) {
+                switch (category) {
+                    case "Арифметика":
+                        oper_level.add(6);
+                        break;
+                    case "Степенные выражения":
+                        oper_level.add(1);
+                        oper_level.add(2);
+                        oper_level.add(3);
+                        break;
+                    case "Квадратные уравнения":
+                        oper_level.add(4);
+                        oper_level.add(5);
+                        break;
+                    case "Неравенства":
+                        oper_level.add(7);
+                        oper_level.add(8);
+                        oper_level.add(9);
+                        break;
+                }
+            }
+            if (!oper_level.isEmpty()) {
+                count = totalQuestions / oper_level.size();
+            } else {
+                count = totalQuestions;
+            }
         } else if (level == 3){
-            // if выбрана галочка квадратное неравенства, то добавляем это
-            oper_level.add(3);
-            oper_level.add(4);
-            // if выбрана галочка логарифмы, то добавляем это
-            oper_level.add(1);
-            // if выбрана галочка тригонометрия, то добавляем это
-            oper_level.add(2);
-            count = (int) totalQuestions / oper_level.size();
+            for (String category : selectedCategories) {
+                switch (category) {
+                    case "Квадратные неравенства":
+                        oper_level.add(3);
+                        oper_level.add(4);
+                        break;
+                    case "Тригонометрия":
+                        oper_level.add(2);
+                        break;
+                    case "Логарифмические выражения":
+                        oper_level.add(1);
+                        break;
+                }
+            }
+            if (!oper_level.isEmpty()) {
+                count = totalQuestions / oper_level.size();
+            } else {
+                count = totalQuestions;
+            }
         }
-
-        // Генерируем пример
         generateNewExample();
-
-        // обработка кнопки следующий пример
         buttonSkip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -118,23 +166,29 @@ public class MainActivity extends AppCompatActivity {
                 String userAnswer = editTextAnswer.getText().toString();
 
                 // Проверяем правильность ответа
-                if (Double.parseDouble(userAnswer) == result) {
-                    //Toast.makeText(MainActivity.this, "Правильно! " + i, Toast.LENGTH_SHORT).show();
+                try {
+                    if (Double.parseDouble(userAnswer) == result) {
+                        score += score_task;
+                        Toast.makeText(MainActivity.this, "Правильно! " + score, Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(MainActivity.this, "Неправильно! " + score, Toast.LENGTH_SHORT).show();
+                    }
+                } catch (NumberFormatException e) {
+                    Toast.makeText(MainActivity.this, "Введите корректное число!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
-
-                    number_question++;
-                    if ((number_question % count == 0) && (i <= oper_level.size())){
+                number_question++;
+                if (number_question >= totalQuestions) {
+                    Intent intent = new Intent(MainActivity.this, game.class);
+                    intent.putExtra("score", score);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    if (number_question % count == 0 && i < oper_level.size() - 1) {
                         i++;
                     }
-                    score += score_task;
-                    Toast.makeText(MainActivity.this, "Правильно! " + score, Toast.LENGTH_SHORT).show();
-                    if (number_question <= totalQuestions){
-                        generateNewExample();// Генерируем новый пример
-                    } else {
-                        //конец тренажера - переход на предыдущий экран
-                    }
-                } else {
-                    Toast.makeText(MainActivity.this, "Неправильно!" + score, Toast.LENGTH_SHORT).show();
+                    generateNewExample();
                 }
             }
         });
